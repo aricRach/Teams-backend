@@ -14,7 +14,7 @@ export class GatewayController {
     const aiUrl = process.env.AI_SERVICE_URL || '';
       console.log('ai url', aiUrl)
     const response = await lastValueFrom(
-        this.http.post(aiUrl, body, {
+        this.http.post(`${aiUrl}/team-of-the-week`, body, {
           headers: {
             Authorization: token,
           },
