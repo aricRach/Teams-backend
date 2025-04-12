@@ -6,6 +6,7 @@ dotenv.config();
 export class AiController {
   @Post()
   async balanceTeams(@Body() players: any[]) {
+    console.log('balanceTeams api service ai')
     const prompt = `
     You are an AI soccer analyst.
 
@@ -37,6 +38,7 @@ Respond only with the JSON object.
 
     ${JSON.stringify(players)}.`
 
+    console.log(process.env.GROQ_API_KEY)
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -56,6 +58,7 @@ Respond only with the JSON object.
     const data = await response.json();
     // @ts-ignore
     const result = data.choices?.[0]?.message?.content;
+    console.log(result)
     if(result) {
       const jsonString = result.match(/```json([\s\S]*?)```/)[1].trim();
       const parsed = JSON.parse(jsonString);

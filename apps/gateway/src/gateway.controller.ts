@@ -12,6 +12,7 @@ export class GatewayController {
   async getBalance(@Body() body: any, @Req() req: any) {
     const token = req.headers['authorization'];
     const aiUrl = process.env.AI_SERVICE_URL || '';
+      console.log('ai url', aiUrl)
     const response = await lastValueFrom(
         this.http.post(aiUrl, body, {
           headers: {
