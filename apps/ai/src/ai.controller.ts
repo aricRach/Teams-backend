@@ -58,12 +58,13 @@ Respond only with the JSON object.
     const data = await response.json();
     // @ts-ignore
     const result = data.choices?.[0]?.message?.content;
-    console.log(result)
+    console.log('result', result)
     if(result) {
-      const jsonString = result.match(/```json([\s\S]*?)```/)[1].trim();
-      const parsed = JSON.parse(jsonString);
-      console.log(parsed);
-      return parsed;
+      return result;
+      // const jsonString = result.match(/```json([\s\S]*?)```/)[1].trim();
+      // const parsed = JSON.parse(jsonString);
+      // console.log(parsed);
+      // return parsed;
     }
     // @ts-ignore
     return { result: data.choices?.[0]?.message?.content || 'No result' };
