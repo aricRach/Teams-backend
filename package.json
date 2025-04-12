@@ -6,7 +6,7 @@
     "start:dev": "concurrently \"npm run start:gateway\" \"npm run start:ai\"",
     "start:gateway:prod": "cross-env NODE_ENV=production node dist/apps/gateway/src/main.js",
     "start:ai:prod": "cross-env NODE_ENV=production node dist/apps/ai/src/main.js",
-    "build": "nest build"
+    "build": "npx nest build"
   },
   "dependencies": {
     "@nestjs/axios": "^3.1.3",
