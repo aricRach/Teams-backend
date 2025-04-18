@@ -25,8 +25,8 @@ Rules:
 
 Output format:
 Return a JSON object with two keys:
-1. \`team\`: an array of 5 selected player names, ordered by position (2 strikers, 2 midfielders, 1 defender)
-2. \`explanation\`: an array with 5 objects, each containing:
+1. \`team\`: an array of 5 selected player names(you must choose 5 different players even if some of them has the same statistics), ordered by position (2 strikers, 2 midfielders, 1 defender)
+2. \`explanation\`: an array with 5 different players(you must choose 5 different players even if some of them has the same statistics), each containing:
    - \`player\`: the player's name
    - \`position\`: striker, midfielder, or defender
    - \`goals\`: number of goals
@@ -34,7 +34,8 @@ Return a JSON object with two keys:
    - \`rating\`: a number from 1 to 10 (indicating performance)
    - \`reason\`: a brief, fun, and slightly humorous explanation of why the player was selected. Feel free to add a quirky touch, like "this player is a goal-scoring machine, and they're hotter than a summer afternoon!"
 
-Respond only with the JSON object.
+
+Respond only with string that can be directly converted to JSON object.
 
     ${JSON.stringify(players)}.`
 
@@ -47,7 +48,7 @@ Respond only with the JSON object.
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'qwen-2.5-32b',
+        model: 'gemma2-9b-it',
         messages: [
           { role: 'system', content: 'You help to select the team of the week according to the provided statistics.' },
           { role: 'user', content: prompt }
@@ -60,13 +61,15 @@ Respond only with the JSON object.
     const result = data.choices?.[0]?.message?.content;
     console.log('result', result)
     if(result) {
-      return result;
-      // const jsonString = result.match(/```json([\s\S]*?)```/)[1].trim();
-      // const parsed = JSON.parse(jsonString);
-      // console.log(parsed);
-      // return parsed;
+      const jsonString = result.match(/```json([\s\S]*?)```/)?.[1]?.trim();
+      if (!jsonString) {
+        // @ts-ignore
+        return { result: JSON.parse(data.choices?.[0]?.message?.content) || {} };
+      }
+      return JSON.parse(jsonString);
+
     }
     // @ts-ignore
-    return { result: data.choices?.[0]?.message?.content || 'No result' };
+    return { result: JSON.parse(data.choices?.[0]?.message?.content)|| {} };
   }
 }
