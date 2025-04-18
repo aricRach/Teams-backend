@@ -17,6 +17,6 @@ async function bootstrap() {
     origin: process.env.ALLOWED_ORIGIN,
     credentials: true,
   });
-  await app.listen(3002);
+  await app.listen(parseInt(process.env.PORT || '3002', 10));
 }
 bootstrap();

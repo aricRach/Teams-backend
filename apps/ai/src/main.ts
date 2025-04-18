@@ -14,6 +14,5 @@ if (fs.existsSync(envPath)) {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3001);
-}
+  await app.listen(parseInt(process.env.AI_PORT || '3001', 10));}
 bootstrap();
