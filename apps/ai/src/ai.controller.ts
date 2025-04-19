@@ -64,12 +64,12 @@ Respond only with string that can be directly converted to JSON object.
       const jsonString = result.match(/```json([\s\S]*?)```/)?.[1]?.trim();
       if (!jsonString) {
         // @ts-ignore
-        return { result: JSON.parse(data.choices?.[0]?.message?.content) || {} };
+        return JSON.parse(data.choices?.[0]?.message?.content) || {} ;
       }
       return JSON.parse(jsonString);
 
     }
     // @ts-ignore
-    return { result: JSON.parse(data.choices?.[0]?.message?.content)|| {} };
+    return JSON.parse(data.choices?.[0]?.message?.content)|| {};
   }
 }
