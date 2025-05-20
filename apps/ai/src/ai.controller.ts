@@ -2,21 +2,24 @@ import { Controller, Post, Body } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+// https://console.groq.com/docs/models
+export interface TotwReq {
+  players: any[],
+  teamSize: number,
+}
 @Controller('team-of-the-week')
 export class AiController {
   @Post()
-  async balanceTeams(@Body() players: any[]) {
+  async balanceTeams(@Body() totwReq: TotwReq) {
     console.log('balanceTeams api service ai')
     const prompt = `
     You are an AI soccer analyst.
 
-Given a list of soccer players with their number of goals and number of wins, select the best 5 players to form a "Team of the Week".
-
+Given a list of soccer players with their number of goals and number of wins, select the best ${totwReq.teamSize} players to form a "Team of the Week".
+you must give me exactly ${totwReq.teamSize} players!
 Rules:
-- Choose exactly 5 players:
-  - 2 strikers
-  - 2 midfielders
-  - 1 defender
+- Choose exactly ${totwReq.teamSize} players that keeps the rule that you should have 
+strikers and midfielders more then defenders if possible. 
 - Prioritize players based on:
   - Goals scored (for strikers)
   - Wins contributed to (for all)
@@ -25,8 +28,8 @@ Rules:
 
 Output format:
 Return a JSON object with two keys:
-1. \`team\`: an array of 5 selected player names(you must choose 5 different players even if some of them has the same statistics), ordered by position (2 strikers, 2 midfielders, 1 defender)
-2. \`explanation\`: an array with 5 different players(you must choose 5 different players even if some of them has the same statistics), each containing:
+1. \`team\`: an array of ${totwReq.teamSize} selected player names(you must choose ${totwReq.teamSize} different players even if some of them has the same statistics), ordered by position
+2. \`explanation\`: an array with ${totwReq.teamSize} different players(you must choose ${totwReq.teamSize} different players even if some of them has the same statistics), each containing:
    - \`player\`: the player's name
    - \`position\`: striker, midfielder, or defender
    - \`goals\`: number of goals
@@ -37,9 +40,7 @@ Return a JSON object with two keys:
 
 Respond only with string that can be directly converted to JSON object.
 
-    ${JSON.stringify(players)}.`
-
-    console.log(process.env.GROQ_API_KEY)
+    ${JSON.stringify(totwReq.players)}.`
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
