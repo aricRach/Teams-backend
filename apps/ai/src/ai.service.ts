@@ -8,7 +8,7 @@ async getTeamOfTheWeek(@Body() totwReq: TotwReq) {
     console.log('balanceTeams api service ai')
     const prompt = `
     You are an AI soccer analyst.
-    
+    Regardless of previous results if you already made some,
     Given a list of soccer players with their number of goals and number of wins, select the best ${totwReq.teamSize} players to form a "Team of the Week".
     you must give me exactly ${totwReq.teamSize} players!
     pay attention, the totalGoalsConceded means goalsConceded as a team.
@@ -18,7 +18,7 @@ async getTeamOfTheWeek(@Body() totwReq: TotwReq) {
     - Prioritize players based on:
       - Goals scored (for strikers)
       - Wins contributed to (for all)
-      - Balance between individual success (goals) and team success (wins)
+      - Balance between individual success (goals) and team success (wins and goals conceded)
     - If there is a tie, prefer players with higher wins and after that goalsConceded.
     
     Output format:
