@@ -15,6 +15,6 @@ export class AiController {
 
   @Post()
   async teamOfTheWeek(@Body() totwReq: TotwReq) {
-    return this.aiService.getTeamOfTheWeek(totwReq);
+    return this.aiService.getTeamOfTheWeek2(totwReq);
   }
 }
